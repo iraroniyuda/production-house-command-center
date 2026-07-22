@@ -4,41 +4,148 @@ Status: Approved
 Owner: Roni / Product & Engineering  
 Last Reviewed: 2026-07-22  
 Applies To: Repository State  
-Related Documents:
-- Belum ditentukan
 
+Related Documents:
+
+- ../03-architecture/ARCHITECTURE_BLUEPRINT.md
+- ../11-features/core-production-vertical-slice/FEATURE_SPEC.md
+- ../../infra/README.md
 
 ## Implemented
 
+### Documentation
+
 - Documentation Bible v0.1.
+- Product, domain, architecture, security, quality, operations, and AI working guides.
+- Initial architecture decision records.
+- Local infrastructure operating instructions.
+
+### Repository Foundation
+
+- Git repository and GitHub remote.
+- Main and bootstrap branches.
+- Line-ending policy.
+- Root Git ignore policy.
+- Editor, Java, Node.js, and pnpm version declarations.
+
+### Frontend Foundation
+
+- pnpm monorepo workspace.
+- Next.js 16 application under `apps/web`.
+- TypeScript.
+- ESLint.
+- Tailwind CSS.
+- App Router.
+- Frontend lint, typecheck, and production build commands.
+
+### Backend Foundation
+
+- Spring Boot 4.1 application under `apps/api`.
+- Java 21 toolchain.
+- Gradle Wrapper.
+- Spring MVC.
+- Validation.
+- Spring Security.
+- OAuth2 Resource Server.
+- Spring Data JPA.
+- PostgreSQL driver.
+- Flyway.
+- Spring Boot Actuator.
+- Spring Modulith JDBC event publication registry.
+- Testcontainers PostgreSQL.
+- Spring Modulith architecture verification test.
+- Flyway-owned infrastructure migration.
+- Local API runtime profile on port `8081`.
+- Runtime connection to local PostgreSQL.
+- Stateless Spring Security resource server.
+- Keycloak JWT signature and issuer validation.
+- Keycloak realm-role conversion.
+- Explicit PHCC realm-role allowlist.
+- Public Actuator health and info endpoints.
+- Protected `/api/v1/me` identity endpoint.
+- Local CORS policy for `http://localhost:3000`.
+- Automated HTTP security regression tests.
+- Verified anonymous HTTP 401 behavior.
+- Verified signed Keycloak token authentication.
+- Verified `producer` to `ROLE_producer` conversion.
+
+- Dedicated `phcc-api` audience contract.
+- Dedicated Keycloak `phcc-api` resource-server client.
+- Access-token audience mapper from `phcc-web` to `phcc-api`.
+- Expected-audience validation in Spring Security.
+- Automated missing-audience and wrong-audience validator tests.
+- Live verification that a token containing `aud: phcc-api` receives HTTP 200.
+- Live verification that a token without `aud: phcc-api` receives HTTP 401.
+- Live verification that technical Keycloak roles do not become PHCC authorities.
+
+### Local Infrastructure
+
+- Docker Compose environment under `infra`.
+- PostgreSQL 16 application database.
+- Dedicated PostgreSQL database for Keycloak.
+- Persistent Docker named volumes.
+- PostgreSQL health checks.
+- Keycloak 26 local identity provider.
+- Keycloak readiness and management endpoints.
+- PHCC realm import.
+- Public `phcc-web` OIDC client.
+- Authorization Code flow with PKCE S256.
+- Initial PHCC realm roles.
+- Loopback-only published ports.
+- Keycloak database isolated from the host.
+- Environment template with local credentials excluded from Git.
+- Root pnpm commands for infrastructure lifecycle management.
+- Operational README for local infrastructure.
 
 ## Not Yet Implemented
 
-- Repository application.
-- Frontend.
-- Backend.
-- Database schema.
-- Keycloak realm.
-- Docker Compose environment.
+- Organization domain.
+- Membership and contextual authorization model.
+- Project domain.
+- Scene and scheduling modules.
+- Browser Authorization Code and PKCE integration.
+- Frontend authentication and session integration.
+- Application user provisioning.
+- MinIO or alternative S3-compatible storage.
+- Object-storage architecture decision record.
+- Production Keycloak configuration.
+- Production secret management.
+- Continuous integration workflow.
 - OpenAPI production contract.
-- Core vertical slice.
-
-## Current Architecture Status
-
-Approved concept; implementation has not started.
+- Core production vertical slice.
 
 ## Current Database Version
 
-None.
+V1 Ã¢â‚¬â€ Spring Modulith event publication registry.
 
 ## Current API Version
 
 Draft v1.
 
+## Current Local Runtime
+
+- Web application: `http://localhost:3000`
+- Spring Boot API: `http://localhost:8081`
+- PHCC PostgreSQL: `127.0.0.1:15432`
+- Keycloak: `http://localhost:8080`
+- Keycloak management: `http://localhost:9000`
+- OIDC issuer: `http://localhost:8080/realms/phcc`
+
+## Current Infrastructure Services
+
+| Service | Runtime |
+|---|---|
+| PHCC PostgreSQL | PostgreSQL 16.14 |
+| Keycloak PostgreSQL | PostgreSQL 16.14 |
+| Keycloak | Keycloak 26.7.0 |
+| Container orchestration | Docker Compose |
+
 ## Next Recommended Milestone
 
-1. Create repository structure.
-2. Bootstrap local infrastructure.
-3. Implement Organization, Membership, and Project.
-4. Establish architecture tests.
-5. Establish CI before feature growth.
+1. Integrate browser Authorization Code flow with PKCE.
+2. Connect the Next.js frontend to Keycloak.
+3. Define frontend authentication and token handling.
+4. Add login, logout, and authenticated-session behavior.
+5. Connect the frontend to the protected `/api/v1/me` endpoint.
+6. Add browser-level authentication tests.
+7. Add continuous integration.
