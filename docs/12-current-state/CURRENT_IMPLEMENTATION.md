@@ -101,6 +101,31 @@ Related Documents:
 - Vitest configured for frontend unit tests.
 - Automated tests cover environment validation, identity-claim parsing, and authenticated-fetch safeguards.
 - Current frontend test baseline: 3 test files and 13 passing tests.
+- Playwright 1.61.1 configured for local browser E2E testing.
+- Chromium-only browser test project.
+- Single worker with parallel execution disabled.
+- One serial browser-authentication lifecycle test.
+- Automated unauthenticated initialization verification.
+- Automated Keycloak login and PKCE callback verification.
+- Automated authenticated `/api/v1/me` verification.
+- Automated `ROLE_producer` business-role verification.
+- Automated reload and SSO session-recovery verification.
+- Automated logout and post-logout reload verification.
+- Runtime-only Keycloak test user with a complete profile.
+- Runtime user receives only the required `producer` realm role.
+- Random runtime password generated in process memory.
+- Password delivered to Keycloak through exact standard-input bytes.
+- E2E credentials are not written to repository files or logs.
+- E2E output is stored in a per-run temporary directory.
+- Traces, screenshots, videos, and persisted storage state are disabled.
+- Runtime user, child processes, temporary scripts, logs, and output are cleaned in `finally`.
+- Caller E2E environment variables are restored after execution.
+- Post-run verification confirms ports `3000` and `8081` are released.
+- Post-run verification confirms no runtime E2E user remains.
+- Post-run verification confirms no Playwright repository artifacts remain.
+- Root browser E2E command: `pnpm web:test:e2e`.
+- Current browser E2E baseline: 1 Chromium test passing.
+
 ### Local Infrastructure
 
 - Docker Compose environment under `infra`.
@@ -126,8 +151,6 @@ Related Documents:
 - Membership and contextual authorization model.
 - Project domain.
 - Scene and scheduling modules.
-- Browser Authorization Code and PKCE integration.
-- Frontend authentication and session integration.
 - Application user provisioning.
 - MinIO or alternative S3-compatible storage.
 - Object-storage architecture decision record.
@@ -139,7 +162,7 @@ Related Documents:
 
 ## Current Database Version
 
-V1 Ã¢â‚¬â€ Spring Modulith event publication registry.
+V1 - Spring Modulith event publication registry.
 
 ## Current API Version
 
@@ -165,10 +188,9 @@ Draft v1.
 
 ## Next Recommended Milestone
 
-1. Add Playwright browser authentication coverage.
-2. Automate login, authenticated API access, reload recovery, and logout.
-3. Define protected-route behavior for authenticated application areas.
-4. Introduce the first authenticated application shell.
-5. Add Content Security Policy and browser security headers.
-6. Add continuous integration for frontend and backend quality gates.
-7. Begin application-user provisioning and contextual authorization.
+1. Define protected-route behavior for authenticated application areas.
+2. Introduce the first authenticated application shell.
+3. Add Content Security Policy and browser security headers.
+4. Add continuous integration for frontend, backend, and browser quality gates.
+5. Begin application-user provisioning and contextual authorization.
+6. Begin the organization, membership, and project-domain foundation.
