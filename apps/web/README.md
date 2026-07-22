@@ -1,34 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PHCC Web
 
-## Getting Started
+Next.js browser application for Production House Command Center.
 
-First, run the development server:
+## Requirements
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js version defined by the repository
+- pnpm version defined by the repository
+- Local Keycloak and PHCC API infrastructure
+
+## Local Environment
+
+Copy the committed environment template:
+
+```powershell
+Copy-Item "apps\web\.env.example" "apps\web\.env.local"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Expected local values:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```properties
+NEXT_PUBLIC_KEYCLOAK_URL=http://localhost:8080
+NEXT_PUBLIC_KEYCLOAK_REALM=phcc
+NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=phcc-web
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8081
+```
 
-## Learn More
+These variables are public browser configuration. Never place a client secret,
+password, access token, or refresh token in a `NEXT_PUBLIC_*` variable.
 
-To learn more about Next.js, take a look at the following resources:
+## Authentication
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The browser uses the official `keycloak-js` adapter with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- OpenID Connect Authorization Code flow;
+- PKCE S256;
+- the public `phcc-web` client;
+- Keycloak `check-sso` session discovery;
+- in-memory access and refresh tokens;
+- centralized token refresh;
+- direct bearer-token requests to the Spring Boot API.
 
-## Deploy on Vercel
+Tokens must not be persisted in browser storage or application cookies.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The Spring Boot API remains responsible for validating signature, issuer,
+expiry, audience, and application authorities.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Run Locally
+
+Start infrastructure:
+
+```powershell
+pnpm infra:up
+```
+
+Start the API in another terminal:
+
+```powershell
+.\apps\api\gradlew.bat `
+    -p apps\api `
+    bootRun `
+    --args="--spring.profiles.active=local" `
+    --console=plain
+```
+
+Start the web application:
+
+```powershell
+pnpm web:dev
+```
+
+Open:
+
+```text
+http://localhost:3000
+```
+
+## Quality Gates
+
+```powershell
+pnpm web:test
+pnpm web:lint
+pnpm web:typecheck
+pnpm web:build
+```
+
+## Current Test Coverage
+
+Frontend unit tests currently cover:
+
+- public environment validation;
+- authenticated identity-claim parsing;
+- bearer-token header management;
+- cookie omission;
+- rejection of caller-provided authorization headers;
+- prevention of cross-origin token forwarding;
+- authentication clearing after HTTP 401.
+
+Browser-level login automation is not implemented yet.

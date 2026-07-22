@@ -18,6 +18,7 @@
     "infra:down": "docker compose --env-file infra/.env -f infra/compose.yaml down",
     "infra:ps": "docker compose --env-file infra/.env -f infra/compose.yaml ps",
     "infra:logs": "docker compose --env-file infra/.env -f infra/compose.yaml logs -f",
-    "infra:logs:tail": "docker compose --env-file infra/.env -f infra/compose.yaml logs --tail 200"
+    "infra:logs:tail": "docker compose --env-file infra/.env -f infra/compose.yaml logs --tail 200",
+    "web:test": "pnpm --filter web test"
   }
 }

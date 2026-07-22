@@ -78,6 +78,29 @@ Related Documents:
 - Live verification that a token without `aud: phcc-api` receives HTTP 401.
 - Live verification that technical Keycloak roles do not become PHCC authorities.
 
+### Browser Authentication
+
+- Browser authentication decision recorded in `ADR-0006`.
+- Official `keycloak-js` adapter integrated with the Next.js application.
+- Authorization Code flow with PKCE S256 through the `phcc-web` public client.
+- Browser session discovery through Keycloak `check-sso`.
+- Silent session-check page at `/silent-check-sso.html`.
+- Access and refresh tokens remain in adapter memory.
+- Tokens are not persisted in `localStorage`, `sessionStorage`, or application cookies.
+- Single-flight token refresh through `keycloak.updateToken`.
+- Centralized authenticated PHCC API fetch abstraction.
+- Authenticated API requests omit cookies.
+- Caller-provided authorization headers are rejected.
+- Access tokens are restricted to the configured PHCC API origin.
+- HTTP 401 responses clear local authentication state.
+- Login, logout, session recovery after reload, and `/api/v1/me` verified live.
+- Browser-issued token verified with audience `phcc-api`.
+- Browser user role `producer` verified as `ROLE_producer`.
+- Technical Keycloak roles verified not to leak into PHCC authorities.
+- Public browser environment configuration documented through `.env.example`.
+- Vitest configured for frontend unit tests.
+- Automated tests cover environment validation, identity-claim parsing, and authenticated-fetch safeguards.
+- Current frontend test baseline: 3 test files and 13 passing tests.
 ### Local Infrastructure
 
 - Docker Compose environment under `infra`.
@@ -142,10 +165,10 @@ Draft v1.
 
 ## Next Recommended Milestone
 
-1. Integrate browser Authorization Code flow with PKCE.
-2. Connect the Next.js frontend to Keycloak.
-3. Define frontend authentication and token handling.
-4. Add login, logout, and authenticated-session behavior.
-5. Connect the frontend to the protected `/api/v1/me` endpoint.
-6. Add browser-level authentication tests.
-7. Add continuous integration.
+1. Add Playwright browser authentication coverage.
+2. Automate login, authenticated API access, reload recovery, and logout.
+3. Define protected-route behavior for authenticated application areas.
+4. Introduce the first authenticated application shell.
+5. Add Content Security Policy and browser security headers.
+6. Add continuous integration for frontend and backend quality gates.
+7. Begin application-user provisioning and contextual authorization.
