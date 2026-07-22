@@ -19,6 +19,7 @@
     "infra:ps": "docker compose --env-file infra/.env -f infra/compose.yaml ps",
     "infra:logs": "docker compose --env-file infra/.env -f infra/compose.yaml logs -f",
     "infra:logs:tail": "docker compose --env-file infra/.env -f infra/compose.yaml logs --tail 200",
-    "web:test": "pnpm --filter web test"
+    "web:test": "pnpm --filter web test",
+    "web:test:e2e": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-browser-auth-e2e.ps1"
   }
 }

@@ -73,3 +73,8 @@ Desktop.ini
 # PHCC local infrastructure
 infra/.env
 !infra/.env.example
+# Playwright test artifacts
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/blob-report/
+apps/web/.auth/
