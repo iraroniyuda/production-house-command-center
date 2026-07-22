@@ -69,6 +69,15 @@ Related Documents:
 - Verified signed Keycloak token authentication.
 - Verified `producer` to `ROLE_producer` conversion.
 
+- Dedicated `phcc-api` audience contract.
+- Dedicated Keycloak `phcc-api` resource-server client.
+- Access-token audience mapper from `phcc-web` to `phcc-api`.
+- Expected-audience validation in Spring Security.
+- Automated missing-audience and wrong-audience validator tests.
+- Live verification that a token containing `aud: phcc-api` receives HTTP 200.
+- Live verification that a token without `aud: phcc-api` receives HTTP 401.
+- Live verification that technical Keycloak roles do not become PHCC authorities.
+
 ### Local Infrastructure
 
 - Docker Compose environment under `infra`.
