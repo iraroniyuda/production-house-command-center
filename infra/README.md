@@ -104,12 +104,18 @@ http://localhost:9000/health/ready
 The committed realm import defines:
 
 - the `phcc-web` public OIDC client;
+- the `phcc-api` resource-server client;
+- an access-token audience mapper from `phcc-web` to `phcc-api`;
 - Authorization Code flow;
 - PKCE using S256;
 - redirect URIs for `http://localhost:3000`;
 - initial PHCC realm roles.
 
 No application users or user passwords are stored in the committed realm file.
+
+An access token accepted by the PHCC API must contain `phcc-api` in its `aud`
+claim. A correctly signed token from the PHCC realm is still rejected when
+that required audience is missing.
 
 The server currently runs with `start-dev`. This configuration is for local
 development only and must not be used for production deployment.

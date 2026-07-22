@@ -94,7 +94,6 @@ Related Documents:
 - Membership and contextual authorization model.
 - Project domain.
 - Scene and scheduling modules.
-- JWT audience validation for the PHCC API.
 - Browser Authorization Code and PKCE integration.
 - Frontend authentication and session integration.
 - Application user provisioning.
@@ -108,7 +107,7 @@ Related Documents:
 
 ## Current Database Version
 
-V1 â€” Spring Modulith event publication registry.
+V1 Ã¢â‚¬â€ Spring Modulith event publication registry.
 
 ## Current API Version
 
@@ -134,10 +133,10 @@ Draft v1.
 
 ## Next Recommended Milestone
 
-1. Define the dedicated `phcc-api` audience contract.
-2. Configure Keycloak audience mapping.
-3. Enforce JWT audience validation in Spring Security.
-4. Add automated invalid-audience tests.
-5. Integrate browser Authorization Code flow with PKCE.
-6. Connect the Next.js frontend to the authenticated API.
+1. Integrate browser Authorization Code flow with PKCE.
+2. Connect the Next.js frontend to Keycloak.
+3. Define frontend authentication and token handling.
+4. Add login, logout, and authenticated-session behavior.
+5. Connect the frontend to the protected `/api/v1/me` endpoint.
+6. Add browser-level authentication tests.
 7. Add continuous integration.
