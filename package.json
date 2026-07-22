@@ -1,0 +1,16 @@
+{
+  "name": "production-house-command-center",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.15.1",
+  "engines": {
+    "node": ">=24.16.0 <25",
+    "pnpm": "11.15.1"
+  },
+  "scripts": {
+    "web:dev": "pnpm --filter web dev",
+    "web:lint": "pnpm --filter web lint",
+    "web:typecheck": "pnpm --filter web exec tsc --noEmit",
+    "web:build": "pnpm --filter web build"
+  }
+}

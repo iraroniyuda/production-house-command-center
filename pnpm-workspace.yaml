@@ -1,0 +1,16 @@
+packages:
+  - "apps/web"
+  - "packages/*"
+
+engineStrict: true
+saveExact: true
+
+# Supply-chain safeguards
+minimumReleaseAge: 1440
+blockExoticSubdeps: true
+strictDepBuilds: true
+
+# Explicitly reviewed native build dependencies
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
