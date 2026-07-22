@@ -70,3 +70,6 @@ Desktop.ini
 *.zip
 *.7z
 *.rar
+# PHCC local infrastructure
+infra/.env
+!infra/.env.example

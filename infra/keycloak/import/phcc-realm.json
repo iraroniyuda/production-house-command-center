@@ -1,0 +1,66 @@
+{
+  "realm": "phcc",
+  "displayName": "Production House Command Center",
+  "enabled": true,
+  "registrationAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "verifyEmail": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "phcc-admin",
+        "description": "Full PHCC platform administration"
+      },
+      {
+        "name": "producer",
+        "description": "Production and project leadership"
+      },
+      {
+        "name": "production-manager",
+        "description": "Production operations management"
+      },
+      {
+        "name": "director",
+        "description": "Creative and directing access"
+      },
+      {
+        "name": "department-head",
+        "description": "Department-level management"
+      },
+      {
+        "name": "crew-member",
+        "description": "Standard production crew access"
+      },
+      {
+        "name": "viewer",
+        "description": "Read-only project access"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "phcc-web",
+      "name": "PHCC Web",
+      "description": "Production House Command Center web application",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3000/*"
+      }
+    }
+  ]
+}

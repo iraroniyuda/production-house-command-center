@@ -11,6 +11,13 @@
     "web:dev": "pnpm --filter web dev",
     "web:lint": "pnpm --filter web lint",
     "web:typecheck": "pnpm --filter web exec tsc --noEmit",
-    "web:build": "pnpm --filter web build"
+    "web:build": "pnpm --filter web build",
+    "infra:config": "docker compose --env-file infra/.env -f infra/compose.yaml config",
+    "infra:pull": "docker compose --env-file infra/.env -f infra/compose.yaml pull",
+    "infra:up": "docker compose --env-file infra/.env -f infra/compose.yaml up -d",
+    "infra:down": "docker compose --env-file infra/.env -f infra/compose.yaml down",
+    "infra:ps": "docker compose --env-file infra/.env -f infra/compose.yaml ps",
+    "infra:logs": "docker compose --env-file infra/.env -f infra/compose.yaml logs -f",
+    "infra:logs:tail": "docker compose --env-file infra/.env -f infra/compose.yaml logs --tail 200"
   }
 }
