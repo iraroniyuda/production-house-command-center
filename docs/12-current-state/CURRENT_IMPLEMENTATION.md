@@ -2,7 +2,7 @@
 
 Status: Approved  
 Owner: Roni / Product & Engineering  
-Last Reviewed: 2026-07-22  
+Last Reviewed: 2026-07-23\
 Applies To: Repository State  
 
 Related Documents:
@@ -37,6 +37,14 @@ Related Documents:
 - Tailwind CSS.
 - App Router.
 - Frontend lint, typecheck, and production build commands.
+- Public application shell remains available at `/`.
+- Protected application route at `/workspace`.
+- Reusable client-side `AuthenticationBoundary` for authenticated areas.
+- Authenticated `ApplicationShell` with skip navigation, active-account
+  identity, public-home navigation, and logout.
+- Workspace content renders only after browser session verification.
+- Workspace foundation contains no simulated organization, project, or
+  dashboard data.
 
 ### Backend Foundation
 
@@ -101,16 +109,26 @@ Related Documents:
 - Vitest configured for frontend unit tests.
 - Automated tests cover environment validation, identity-claim parsing, and authenticated-fetch safeguards.
 - Current frontend test baseline: 3 test files and 13 passing tests.
+- Public application shell remains available without forced login.
+- Protected client-rendered application area at `/workspace`.
+- Unauthenticated workspace visits remain on the requested route.
+- Explicit Keycloak login gate for protected workspace access.
+- Login callback returns to the originating `/workspace` URL.
+- Authenticated application shell renders only after session verification.
+- Workspace shell exposes active-account identity, public-home navigation,
+  and logout.
+- Spring Boot remains the authoritative authorization boundary.
+- No Next.js middleware, server-managed session, or authenticated SSR.
 - Playwright 1.61.1 configured for local browser E2E testing.
 - Chromium-only browser test project.
 - Single worker with parallel execution disabled.
-- One serial browser-authentication lifecycle test.
+- One serial protected-workspace authentication lifecycle test.
 - Automated unauthenticated initialization verification.
-- Automated Keycloak login and PKCE callback verification.
+- Automated Keycloak login and return-to-workspace callback verification.
 - Automated authenticated `/api/v1/me` verification.
 - Automated `ROLE_producer` business-role verification.
-- Automated reload and SSO session-recovery verification.
-- Automated logout and post-logout reload verification.
+- Automated protected-workspace reload and SSO recovery verification.
+- Automated workspace logout, gate restoration, and reload verification.
 - Runtime-only Keycloak test user with a complete profile.
 - Runtime user receives only the required `producer` realm role.
 - Random runtime password generated in process memory.
@@ -188,9 +206,7 @@ Draft v1.
 
 ## Next Recommended Milestone
 
-1. Define protected-route behavior for authenticated application areas.
-2. Introduce the first authenticated application shell.
-3. Add Content Security Policy and browser security headers.
-4. Add continuous integration for frontend, backend, and browser quality gates.
-5. Begin application-user provisioning and contextual authorization.
-6. Begin the organization, membership, and project-domain foundation.
+1. Add Content Security Policy and browser security headers.
+2. Add continuous integration for frontend, backend, and browser quality gates.
+3. Begin application-user provisioning and contextual authorization.
+4. Begin the organization, membership, and project-domain foundation.
