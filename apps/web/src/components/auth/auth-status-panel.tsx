@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import { useAuthentication } from "@/components/auth/auth-provider";
@@ -136,6 +137,13 @@ export function AuthStatusPanel() {
       </dl>
 
       <div className="mt-6 flex flex-wrap gap-3">
+        <Link
+          href="/workspace"
+          className="rounded-lg bg-cyan-300 px-4 py-2 text-sm font-semibold text-slate-950"
+        >
+          Buka workspace
+        </Link>
+
         <button
           type="button"
           className="rounded-lg bg-emerald-300 px-4 py-2 text-sm font-semibold text-slate-950 disabled:opacity-50"

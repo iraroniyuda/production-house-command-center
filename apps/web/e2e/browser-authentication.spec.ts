@@ -96,10 +96,50 @@ async function requestCurrentUser(
   return responseBody;
 }
 
+async function expectAuthenticatedWorkspace(
+  page: Page,
+  expectedUsername: string,
+): Promise<void> {
+  await expect(page).toHaveURL(
+    "http://localhost:3000/workspace",
+  );
+
+  await expect(
+    page.getByRole("heading", {
+      name: "Workspace Production House",
+      exact: true,
+    }),
+  ).toBeVisible();
+
+  await expect(
+    page.getByText("Authenticated application shell", {
+      exact: true,
+    }),
+  ).toBeVisible();
+
+  await expect(
+    page.getByText(expectedUsername, { exact: true }),
+  ).toBeVisible();
+
+  await expect(
+    page.getByRole("link", {
+      name: "Beranda publik",
+      exact: true,
+    }),
+  ).toBeVisible();
+
+  await expect(
+    page.getByRole("button", {
+      name: "Keluar",
+      exact: true,
+    }),
+  ).toBeVisible();
+}
+
 test.describe.configure({ mode: "serial" });
 
 test(
-  "completes the browser authentication lifecycle",
+  "completes the protected workspace authentication lifecycle",
   async ({ page }) => {
     const username = readRequiredEnvironment(
       "PHCC_E2E_USERNAME",
@@ -109,18 +149,22 @@ test(
       "PHCC_E2E_PASSWORD",
     );
 
-    await page.goto("/");
+    await page.goto("/workspace");
+
+    await expect(page).toHaveURL(
+      "http://localhost:3000/workspace",
+    );
 
     await expect(
       page.getByRole("heading", {
-        name: "Belum terautentikasi",
+        name: "Autentikasi diperlukan",
         exact: true,
       }),
     ).toBeVisible();
 
     await page
       .getByRole("button", {
-        name: "Masuk",
+        name: "Masuk ke workspace",
         exact: true,
       })
       .click();
@@ -133,7 +177,9 @@ test(
 
     try {
       await page.waitForURL(
-        (url) => url.origin === "http://localhost:3000",
+        (url) =>
+          url.origin === "http://localhost:3000" &&
+          url.pathname === "/workspace",
         { timeout: 15_000 },
       );
     } catch {
@@ -144,7 +190,7 @@ test(
 
       throw new Error(
         [
-          "Login did not return to the PHCC frontend.",
+          "Login did not return to the protected PHCC workspace.",
           `Current location: ${currentUrl.origin}${currentUrl.pathname}`,
           `Visible page text: ${visibleText}`,
         ].join("\n"),
@@ -152,9 +198,7 @@ test(
     }
 
     try {
-      await expect(
-        page.getByText("Authenticated", { exact: true }),
-      ).toBeVisible();
+      await expectAuthenticatedWorkspace(page, username);
     } catch {
       const currentUrl = new URL(page.url());
       const visibleText = (
@@ -163,12 +207,29 @@ test(
 
       throw new Error(
         [
-          "Authentication callback returned without an authenticated UI.",
+          "The authenticated workspace shell was not visible.",
           `Current location: ${currentUrl.origin}${currentUrl.pathname}`,
           `Visible page text: ${visibleText}`,
         ].join("\n"),
       );
     }
+
+    await page.reload();
+
+    await expectAuthenticatedWorkspace(page, username);
+
+    await page
+      .getByRole("link", {
+        name: "Beranda publik",
+        exact: true,
+      })
+      .click();
+
+    await expect(page).toHaveURL("http://localhost:3000/");
+
+    await expect(
+      page.getByText("Authenticated", { exact: true }),
+    ).toBeVisible();
 
     await expect(
       page.getByRole("heading", {
@@ -207,15 +268,46 @@ test(
     );
 
     await page
+      .getByRole("link", {
+        name: "Buka workspace",
+        exact: true,
+      })
+      .click();
+
+    await expectAuthenticatedWorkspace(page, username);
+
+    await page
       .getByRole("button", {
         name: "Keluar",
         exact: true,
       })
       .click();
 
+    await expect(page).toHaveURL("http://localhost:3000/");
+
     await expect(
       page.getByRole("heading", {
         name: "Belum terautentikasi",
+        exact: true,
+      }),
+    ).toBeVisible();
+
+    await page.goto("/workspace");
+
+    await expect(page).toHaveURL(
+      "http://localhost:3000/workspace",
+    );
+
+    await expect(
+      page.getByRole("heading", {
+        name: "Autentikasi diperlukan",
+        exact: true,
+      }),
+    ).toBeVisible();
+
+    await expect(
+      page.getByRole("button", {
+        name: "Masuk ke workspace",
         exact: true,
       }),
     ).toBeVisible();
@@ -224,14 +316,7 @@ test(
 
     await expect(
       page.getByRole("heading", {
-        name: "Belum terautentikasi",
-        exact: true,
-      }),
-    ).toBeVisible();
-
-    await expect(
-      page.getByRole("button", {
-        name: "Masuk",
+        name: "Autentikasi diperlukan",
         exact: true,
       }),
     ).toBeVisible();

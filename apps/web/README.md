@@ -45,6 +45,29 @@ Tokens must not be persisted in browser storage or application cookies.
 The Spring Boot API remains responsible for validating signature, issuer,
 expiry, audience, and application authorities.
 
+## Protected Workspace
+
+The public application shell remains available at `/`. The first
+authenticated application area is `/workspace`.
+
+Protected workspace behavior:
+
+- protection is enforced by a client-side authentication boundary under
+  `AuthProvider`;
+- unauthenticated visitors remain on `/workspace` and start Keycloak login
+  explicitly;
+- login returns to the originating `/workspace` URL;
+- the authenticated shell renders only after browser session verification;
+- the shell exposes active-account identity, public-home navigation, and
+  logout;
+- no token, browser session, or role decision is persisted by the shell;
+- no organization, project, dashboard metric, or other domain data is
+  simulated;
+- Spring Boot remains the authoritative authorization boundary.
+
+This milestone does not add Next.js middleware, authenticated server-side
+rendering, a Next.js session, or a token-mediating Backend for Frontend.
+
 ## Run Locally
 
 Start infrastructure:
@@ -105,8 +128,9 @@ The runner:
 - assigns the `producer` realm role;
 - generates the password in memory;
 - starts the Spring Boot API and Next.js frontend;
-- runs one serial Chromium authentication lifecycle;
-- verifies `/api/v1/me`, reload recovery, and logout;
+- runs one serial Chromium protected-workspace authentication lifecycle;
+- verifies the `/workspace` gate, callback return, shell recovery,
+  `/api/v1/me`, public-shell navigation, and logout;
 - deletes the runtime user and temporary container script;
 - stops the API and frontend process trees;
 - restores caller environment variables;
@@ -140,16 +164,22 @@ Frontend unit tests currently cover:
 
 The Chromium browser E2E test currently covers:
 
-- unauthenticated initialization through `check-sso`;
+- direct unauthenticated access to `/workspace`;
+- protected-gate rendering without changing the requested route;
 - Keycloak login through Authorization Code flow and PKCE S256;
-- authenticated frontend state;
+- callback return to the originating `/workspace` route;
+- authenticated application-shell rendering;
+- active runtime-account identity in the workspace shell;
+- protected-workspace session recovery after a full page reload;
+- navigation from the workspace to the public application shell;
+- authenticated navigation back through the `Buka workspace` link;
 - a real HTTP 200 response from `/api/v1/me`;
 - the runtime username and exact `ROLE_producer` business role;
 - absence of unintended PHCC business roles;
-- session recovery after a full page reload;
-- authenticated API access after session recovery;
-- Keycloak logout;
-- unauthenticated state after logout and reload.
+- authenticated API access after public-shell reload recovery;
+- Keycloak logout from the authenticated workspace;
+- public unauthenticated state after logout;
+- protected-gate restoration after logout and reload.
 
 The local Playwright baseline is Chromium-only, uses one worker, does
 not use persisted `storageState`, and keeps traces, screenshots, and
