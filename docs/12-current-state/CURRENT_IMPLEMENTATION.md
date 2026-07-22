@@ -55,6 +55,19 @@ Related Documents:
 - Testcontainers PostgreSQL.
 - Spring Modulith architecture verification test.
 - Flyway-owned infrastructure migration.
+- Local API runtime profile on port `8081`.
+- Runtime connection to local PostgreSQL.
+- Stateless Spring Security resource server.
+- Keycloak JWT signature and issuer validation.
+- Keycloak realm-role conversion.
+- Explicit PHCC realm-role allowlist.
+- Public Actuator health and info endpoints.
+- Protected `/api/v1/me` identity endpoint.
+- Local CORS policy for `http://localhost:3000`.
+- Automated HTTP security regression tests.
+- Verified anonymous HTTP 401 behavior.
+- Verified signed Keycloak token authentication.
+- Verified `producer` to `ROLE_producer` conversion.
 
 ### Local Infrastructure
 
@@ -81,8 +94,9 @@ Related Documents:
 - Membership and contextual authorization model.
 - Project domain.
 - Scene and scheduling modules.
-- Spring Security runtime connection to Keycloak.
-- API local runtime profile.
+- JWT audience validation for the PHCC API.
+- Browser Authorization Code and PKCE integration.
+- Frontend authentication and session integration.
 - Application user provisioning.
 - MinIO or alternative S3-compatible storage.
 - Object-storage architecture decision record.
@@ -94,7 +108,7 @@ Related Documents:
 
 ## Current Database Version
 
-V1 — Spring Modulith event publication registry.
+V1 â€” Spring Modulith event publication registry.
 
 ## Current API Version
 
@@ -103,6 +117,7 @@ Draft v1.
 ## Current Local Runtime
 
 - Web application: `http://localhost:3000`
+- Spring Boot API: `http://localhost:8081`
 - PHCC PostgreSQL: `127.0.0.1:15432`
 - Keycloak: `http://localhost:8080`
 - Keycloak management: `http://localhost:9000`
@@ -119,10 +134,10 @@ Draft v1.
 
 ## Next Recommended Milestone
 
-1. Add the API local runtime profile.
-2. Connect Spring Boot to the Compose PostgreSQL instance.
-3. Configure Spring Security as a Keycloak resource server.
-4. Add authorization claim conversion.
-5. Run the API against PostgreSQL and Keycloak.
-6. Verify Flyway migration and Actuator health.
+1. Define the dedicated `phcc-api` audience contract.
+2. Configure Keycloak audience mapping.
+3. Enforce JWT audience validation in Spring Security.
+4. Add automated invalid-audience tests.
+5. Integrate browser Authorization Code flow with PKCE.
+6. Connect the Next.js frontend to the authenticated API.
 7. Add continuous integration.
